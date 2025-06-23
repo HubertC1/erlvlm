@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.egg-info/
+custom_dmc2gym/dmc2gym.egg-info/
+custom_dmcontrol/dm_control.egg-info/
+*.pyc
+
+.idea/
+logs/
+logs_metaworld/
+metaworld/
+custom_dmc2gym/dmc2gym.egg-info/PKG-INFO
