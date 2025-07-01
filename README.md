@@ -23,9 +23,7 @@ pip install -e .
 
 ## Setup Gemini Key:
 1. Obtain a Gemini API key: Follow the instructions at https://aistudio.google.com/app/apikey
-2. Enable parallel querying: We support querying Gemini in parallel using multiple keys, which can speed up the querying process.
-<br>
-   - Place your API keys in `gemini_keys.py` and adjust parameters `n_processes_query` accordingly.
+2. Enable parallel querying: We support querying Gemini in parallel using multiple keys, which can speed up the querying process. Place your API keys in `gemini_keys.py` and adjust parameters `n_processes_query` accordingly.
 
 ## Run experiments
 ```
