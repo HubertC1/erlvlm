@@ -45,11 +45,9 @@ If you use this repo in your research, please consider citing the paper as follo
 ```
 
 ## Acknowledgements
-- This work was supported by Institute for Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government(MSIT) (No.RS2021-II211381, Development of Causal AI through Video
-Understanding and Reinforcement Learning, and Its Applications to Real Environments) and partly supported by Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea
-government(MSIT) (No.RS-2022-II220184, Development and Study of AI Technologies to Inexpensively Conform to Evolving Policy on Ethics).
+- This work was supported by Institute for Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government(MSIT) (No.RS2021-II211381, Development of Causal AI through Video Understanding and Reinforcement Learning, and Its Applications to Real Environments) and partly supported by Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government(MSIT) (No.RS-2022-II220184, Development and Study of AI Technologies to Inexpensively Conform to Evolving Policy on Ethics).
 
-- This repo contains code adapted from [RbRL](https://github.com/Dev1nW/Rating-based-Reinforcement-Learning) , 
+- This repo contains code adapted from [RbRL](https://github.com/Dev1nW/Rating-based-Reinforcement-Learning), 
 [RL-VLM-F](https://github.com/yufeiwang63/RL-VLM-F). We thank the authors and contributors for open-sourcing their code.
 
 ## License
