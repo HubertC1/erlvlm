@@ -150,7 +150,7 @@ pydantic_core==2.27.1
 pydub==0.25.1
 Pygments==2.18.0
 PyOpenGL==3.1.7
-pyparsing @ file:///croot/pyparsing_1731445506121/work
+pyparsing==3.0.9
 PySocks==1.7.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
@@ -195,8 +195,7 @@ tinycss2==1.4.0
 tokenizers==0.13.3
 tomli==2.2.1
 tomlkit==0.12.0
-torch==1.13.1+cu117
-torchvision==0.14.1+cu117
+
 tornado==6.4.2
 tqdm==4.67.1
 traitlets==5.14.3
