@@ -12,6 +12,21 @@ KAIST, South Korea
 ## Overview
 This is the official implementation of **ERL-VLM** for MetaWorld tasks.
 
+**🔥 New: LLaVA Integration** - This implementation now uses **LLaVA** (Large Language and Vision Assistant) instead of Gemini for vision-language feedback, providing local and more flexible VLM capabilities through Ollama.
+
+## System Requirements
+
+### Hardware Requirements
+- **GPU**: NVIDIA GPU with 8GB+ VRAM (recommended for LLaVA 7B model)
+- **RAM**: 16GB+ system RAM
+- **Storage**: 10GB+ free space for models and data
+
+### Software Requirements  
+- **OS**: Linux (Ubuntu 18.04+ recommended)
+- **CUDA**: 11.7+ (for GPU acceleration)
+- **Python**: 3.9
+- **Ollama**: Latest version (for LLaVA inference)
+
 ## Installation
 
 ### Step 1: Basic Installation
@@ -82,14 +97,53 @@ conda deactivate
 conda activate erlvlm
 ```
 
-## Setup Gemini Key:
-1. Obtain a Gemini API key: Follow the instructions at https://aistudio.google.com/app/apikey
-2. Enable parallel querying: We support querying Gemini in parallel using multiple keys, which can speed up the querying process. Place your API keys in `gemini_keys.py` and adjust parameters `n_processes_query` accordingly.
+## Setup Vision-Language Model (VLM)
+
+This project now uses **LLaVA** instead of Gemini for vision-language feedback. The system uses Ollama to run LLaVA models locally.
+
+### Step 1: Install Ollama
+```bash
+# Install Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Start Ollama service (if not auto-started)
+ollama serve
+```
+
+### Step 2: Download LLaVA Model
+```bash
+# Download and install LLaVA model (this may take several minutes)
+ollama pull llava
+
+# Verify installation
+ollama list
+```
+
+### Step 3: Test LLaVA Interface
+```bash
+# Test the LLaVA interface
+python llava/llava_interface.py
+```
+
+**Important Notes:**
+- Ollama must be running (`ollama serve`) before starting training
+- The first time you run training, it may download the LLaVA model automatically
+- LLaVA requires significant GPU memory (~8GB+ recommended for 7B model)
+- If you encounter issues, check that Ollama is accessible at `http://localhost:11434`
 
 ## Run experiments
 
+### Prerequisites for Running Experiments
+**Before running any experiments, ensure:**
+1. Ollama service is running: `ollama serve` 
+2. LLaVA model is installed: `ollama list` should show `llava`
+3. Environment variables are set (automatic if you followed installation steps)
+
 ### For Headless Servers (No Display)
 ```bash
+# Start Ollama service (in separate terminal or background)
+ollama serve &
+
 # Test run with debug mode (disables wandb)
 MUJOCO_GL=egl python train_PEBBLE_VLM.py env=metaworld_drawer-open-v2 debug=True
 
@@ -101,6 +155,9 @@ MUJOCO_GL=egl bash scripts/sweep_into/run_ERLVLM.sh
 
 ### For Servers with Display
 ```bash
+# Start Ollama service (in separate terminal or background)
+ollama serve &
+
 # Test run with debug mode
 python train_PEBBLE_VLM.py env=metaworld_drawer-open-v2 debug=True
 
@@ -115,6 +172,62 @@ bash scripts/sweep_into/run_ERLVLM.sh
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin:/usr/lib/nvidia
 export MUJOCO_PY_MUJOCO_PATH=~/.mujoco/mujoco210
 ```
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**1. "LLaVA model not initialized" Error**
+```bash
+# Check if Ollama is running
+curl http://localhost:11434/api/tags
+
+# Start Ollama if not running
+ollama serve
+
+# Ensure LLaVA model is installed
+ollama pull llava
+```
+
+**2. "Ollama not available" or Connection Errors**
+```bash
+# Check Ollama status
+ollama list
+
+# Restart Ollama service
+pkill ollama
+ollama serve
+
+# Test Ollama API
+curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{"model": "llava", "prompt": "test", "stream": false}'
+```
+
+**3. GPU Memory Issues**
+- LLaVA requires significant GPU memory (~8GB+ for 7B model)
+- Consider using a smaller model: `ollama pull llava:7b` 
+- Monitor GPU usage: `nvidia-smi`
+- Reduce batch sizes in training configuration
+
+**4. NumPy/Package Version Conflicts**
+```bash
+# Reinstall with correct versions
+pip install numpy==1.24.3
+pip install transformers==4.37.0
+```
+
+**5. MuJoCo/Rendering Issues**
+```bash
+# For headless servers, always use:
+MUJOCO_GL=egl python train_PEBBLE_VLM.py ...
+
+# Check MuJoCo installation
+ls ~/.mujoco/mujoco210/
+```
+
+**6. Training Starts but No VLM Queries**
+- Verify training logs show: "LLaVA model initialized for VLM queries"
+- Check that `vlm_feedback=True` in your configuration
+- Look for "[LLaVA]" prefixed messages in output
 
 ## Citation
 If you use this repo in your research, please consider citing the paper as follows:
